@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="Calculator" basedir="." default="init">
+
+	<property file="build.properties" />
+
+	<path id="libpath">
+		<fileset id="jarfileset" dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="init" depends="clean,createdirs,compile,test,testsFailed,package" />
+
+	<target name="clean">
+		<delete dir="${classes.dir}" />
+		<delete dir="${testClasses.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="createdirs">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${testClasses.dir}" />
+	</target>
+
+	<target name="compile">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="libpath" />
+		<javac srcdir="${testSrc.dir}" destdir="${testClasses.dir}" classpath="${classes.dir}" classpathref="libpath" />
+	</target>
+
+	<target name="test">
+		<junit haltonerror="false" failureproperty="unitTestFailed" printsummary="true">
+			<test name="com.ju3.beans.CalculatorTest" />
+			<classpath location="${classes.dir}" />
+			<classpath refid="libpath" />
+			<classpath location="${testClasses.dir}" />
+		</junit>
+	</target>
+	
+	<target name="testsFailed" if="unitTestFailed">
+		<fail message="Unit Testing Failed" />
+	</target>
+	
+	<target name="package">
+		<jar basedir="${classes.dir}" destfile="${dist.dir}${file.separator}${ant.project.name}.jar" />
+	</target>
+</project>
