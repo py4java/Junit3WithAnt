@@ -21,7 +21,7 @@ public class CalculatorTest extends TestCase {
 		calculator = new Calculator();
 		positiveA = 10;
 		positiveB = 20;
-		expectedPositiveSum = 30;
+		expectedPositiveSum = 40;
 
 		negativeA = -30;
 		negativeB = -40;
